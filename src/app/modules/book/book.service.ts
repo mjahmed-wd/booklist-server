@@ -9,9 +9,7 @@ const createBook = async (book: IBook): Promise<IBook | null> => {
 };
 
 const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
-  const { searchTerm, ...filtersData } = filters;
-
-  console.log(filtersData);
+  const { searchTerm, year, ...filtersData } = filters;
 
   const andConditions = [];
 
@@ -34,12 +32,22 @@ const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
     });
   }
 
+  if (year) {
+    const startOfYear = new Date(+year, 0, 1).toISOString();
+    const endOfYear = new Date(+year, 11, 31, 23, 59, 59).toISOString();
+    andConditions.push({
+      publicationDate: {
+        $gte: startOfYear,
+        $lt: endOfYear,
+      },
+    });
+  }
+
   const queryCondition =
     andConditions.length > 0 ? { $and: andConditions } : {};
 
   const result = await Book.find(queryCondition);
   return result;
-  // return await Book.find({});
 };
 
 const getSingleBook = async (id: string): Promise<IBook | null> => {

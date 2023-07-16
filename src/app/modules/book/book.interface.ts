@@ -20,4 +20,5 @@ export type IBookFilters = {
   title?: string;
   author?: string;
   genre?: string;
+  year?: string;
 };
