@@ -10,7 +10,7 @@ const bookSchema = new Schema<IBook>(
     publicationDate: { type: String, required: true },
     reviews: [
       {
-        user: { type: Schema.Types.ObjectId, ref: 'User', required: true  },
+        user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         comment: { type: String, required: true },
       },
     ],

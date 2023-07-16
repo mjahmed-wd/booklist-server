@@ -37,9 +37,9 @@ export const userSchema = new Schema<IUser, UserModel>(
 );
 
 userSchema.statics.isUserExist = async function (
-  phoneNumber: string
+  email: string
 ): Promise<IsUserExist | null> {
-  return await User.findOne({ phoneNumber }, { id: 1, password: 1, role: 1 });
+  return await User.findOne({ email }, { id: 1, password: 1, role: 1 });
 };
 
 userSchema.statics.isPasswordMatched = async function (
@@ -68,10 +68,7 @@ userSchema.pre('save', async function (next) {
     email: this.email,
   });
   if (isExist) {
-    throw new ApiError(
-      httpStatus.CONFLICT,
-      'User email already exists !'
-    );
+    throw new ApiError(httpStatus.CONFLICT, 'User email already exists !');
   }
   this.password = await bcrypt.hash(
     this.password,

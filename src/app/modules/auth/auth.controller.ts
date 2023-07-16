@@ -3,14 +3,17 @@ import httpStatus from 'http-status';
 import config from '../../../config';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
-import { ILoginUserResponse, IRefreshTokenResponse } from './auth.interface';
+import {
+  ILoginUser,
+  ILoginUserResponse,
+  IRefreshTokenResponse,
+} from './auth.interface';
 import { AuthService } from './auth.service';
 
 const loginUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...loginData } = req.body;
-    const result = await AuthService.loginUser(loginData);
-    const { refreshToken, ...others } = result;
+    const user = await AuthService.loginUser(loginData);
 
     // set refresh token into cookie
 
@@ -21,11 +24,11 @@ const loginUser: RequestHandler = catchAsync(
 
     res.cookie('refreshToken', refreshToken, cookieOptions);
 
-    sendResponse<ILoginUserResponse>(res, {
+    sendResponse<ILoginUser>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'User logged in successfully !',
-      data: others,
+      data: user,
     });
   }
 );
