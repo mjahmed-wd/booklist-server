@@ -19,6 +19,22 @@ const createUser: RequestHandler = catchAsync(
   }
 );
 
+const addBookToUserWishlist: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    console.log(req.body);
+    const bookId = req.body.bookId;
+    const result = await UserService.addBookToUserWishlist(id, bookId);
+    sendResponse<any>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Added to user wishlist',
+      data: result,
+    });
+  }
+);
+
 export const UserController = {
-  createUser
+  createUser,
+  addBookToUserWishlist,
 };
