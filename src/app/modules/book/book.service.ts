@@ -51,7 +51,7 @@ const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
 };
 
 const getSingleBook = async (id: string): Promise<IBook | null> => {
-  return await Book.findById(id);
+  return await Book.findById(id).populate('reviews.user').exec();
 };
 
 const updateSingleBook = async (
