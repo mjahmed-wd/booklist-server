@@ -34,7 +34,38 @@ const addBookToUserWishlist: RequestHandler = catchAsync(
   }
 );
 
+const addBookToUserPlannedList: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const bookId = req.body.bookId;
+    const result = await UserService.addBookToUserPlannedList(id, bookId);
+    sendResponse<any>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Added to user wishlist',
+      data: result,
+    });
+  }
+);
+
+const finishBookFromUserPlannedList: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    console.log(req.body);
+    const bookId = req.body.bookId;
+    const result = await UserService.finishBookFromUserPlannedList(id, bookId);
+    sendResponse<any>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Added to user wishlist',
+      data: result,
+    });
+  }
+);
+
 export const UserController = {
   createUser,
   addBookToUserWishlist,
+  addBookToUserPlannedList,
+  finishBookFromUserPlannedList,
 };

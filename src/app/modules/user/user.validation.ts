@@ -7,7 +7,7 @@ const userLoginZodSchema = z.object({
   }),
 });
 
-const wishlistZodSchema = z.object({
+const bookIdZodSchema = z.object({
   body: z.object({
     bookId: z.string(),
   }),
@@ -15,5 +15,5 @@ const wishlistZodSchema = z.object({
 
 export const userValidation = {
   userLoginZodSchema,
-  wishlistZodSchema,
+  bookIdZodSchema,
 };
