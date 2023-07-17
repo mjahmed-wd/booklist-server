@@ -5,7 +5,7 @@ export type IUser = {
   email: string;
   password: string;
   wishlist: mongoose.Types.ObjectId[];
-  plannedToRead: { book: mongoose.Types.ObjectId[]; isFinished: boolean }[];
+  plannedToRead: { book: mongoose.Types.ObjectId; isFinished: boolean }[];
 };
 
 export type IsUserExist = Pick<IUser, 'password' | 'email'>;

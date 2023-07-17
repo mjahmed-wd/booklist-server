@@ -1,4 +1,6 @@
+import httpStatus from 'http-status';
 import { Types } from 'mongoose';
+import ApiError from '../../../errors/ApiErrors';
 import { IUser } from './user.interface';
 import User from './user.model';
 
@@ -11,6 +13,12 @@ const addBookToUserWishlist = async (
   id: string,
   bookId: string
 ): Promise<IUser | null> => {
+  const user = await User.findById(id);
+
+  if (user?.wishlist.includes(new Types.ObjectId(bookId))) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Already existing');
+  }
+
   const newUser = await User.findByIdAndUpdate(id, {
     $push: { wishlist: bookId },
   });
@@ -21,6 +29,11 @@ const addBookToUserPlannedList = async (
   id: string,
   bookId: string
 ): Promise<IUser | null> => {
+  const user = await User.findById(id);
+  if (user?.plannedToRead.some(item => item.book.toString() === bookId)) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Already existing');
+  }
+
   const newUser = await User.findByIdAndUpdate(
     id,
     {

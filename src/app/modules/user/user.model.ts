@@ -11,15 +11,15 @@ export const userSchema = new Schema<IUser, UserModel>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     wishlist: [{ type: Schema.Types.ObjectId, ref: 'Book', default: [] }],
-    plannedToRead: {
-      type: [
-        {
+    plannedToRead: [
+      {
+        type: {
           book: { type: Schema.Types.ObjectId, ref: 'Book' },
           isFinished: { type: Boolean, default: false },
         },
-      ],
-      default: [],
-    },
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,
