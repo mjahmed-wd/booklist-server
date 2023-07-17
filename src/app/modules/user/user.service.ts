@@ -19,10 +19,13 @@ const addBookToUserWishlist = async (
     throw new ApiError(httpStatus.FORBIDDEN, 'Already existing');
   }
 
-  const newUser = await User.findByIdAndUpdate(id, {
-    $push: { wishlist: bookId },
-  });
-  return newUser;
+  return await User.findByIdAndUpdate(
+    id,
+    {
+      $push: { wishlist: bookId },
+    },
+    { new: true }
+  );
 };
 
 const addBookToUserPlannedList = async (
@@ -60,7 +63,13 @@ const finishBookFromUserPlannedList = async (
   return user;
 };
 
+const getUser = async (id: string): Promise<IUser | null> => {
+  const user = await User.findById(id);
+  return user;
+};
+
 export const UserService = {
+  getUser,
   createUser,
   addBookToUserWishlist,
   addBookToUserPlannedList,

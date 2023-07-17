@@ -19,13 +19,26 @@ const createUser: RequestHandler = catchAsync(
   }
 );
 
+const getUser: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await UserService.getUser(id);
+    sendResponse<IUser>(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Added to user wishlist',
+      data: result,
+    });
+  }
+);
+
 const addBookToUserWishlist: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
     console.log(req.body);
     const bookId = req.body.bookId;
     const result = await UserService.addBookToUserWishlist(id, bookId);
-    sendResponse<any>(res, {
+    sendResponse<IUser>(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Added to user wishlist',
@@ -64,6 +77,7 @@ const finishBookFromUserPlannedList: RequestHandler = catchAsync(
 );
 
 export const UserController = {
+  getUser,
   createUser,
   addBookToUserWishlist,
   addBookToUserPlannedList,

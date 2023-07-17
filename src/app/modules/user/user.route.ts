@@ -6,6 +6,10 @@ import { userValidation } from './user.validation';
 const router = express.Router();
 
 router
+  .route('/:id')
+  .get(validateRequest(userValidation.userIdZodSchema), UserController.getUser);
+
+router
   .route('/:id/wishlist')
   .post(
     validateRequest(userValidation.bookIdZodSchema),
