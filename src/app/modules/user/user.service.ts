@@ -33,7 +33,9 @@ const addBookToUserPlannedList = async (
   bookId: string
 ): Promise<IUser | null> => {
   const user = await User.findById(id);
-  if (user?.plannedToRead.some(item => item.book.toString() === bookId)) {
+  if (
+    user?.plannedToRead.some(item => item.book === new Types.ObjectId(bookId))
+  ) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Already existing');
   }
 
@@ -56,9 +58,18 @@ const finishBookFromUserPlannedList = async (
   id: string,
   bookId: string
 ): Promise<IUser | null> => {
-  const user = await User.findOneAndUpdate(
-    { _id: new Types.ObjectId(id), 'plannedToRead.book': bookId },
-    { $set: { 'plannedToRead.$.isFinished': true } }
+  const _user = await User.findByIdAndUpdate(id);
+  const plannedToRead = _user?.plannedToRead?.map(book => ({
+    book: book.book,
+    isFinished: book.book.toString() === bookId ? true : book.isFinished,
+  }));
+
+  const user = await User.findByIdAndUpdate(
+    id,
+    {
+      $set: { plannedToRead: plannedToRead },
+    },
+    { new: true }
   );
   return user;
 };

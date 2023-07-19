@@ -55,7 +55,7 @@ const addBookToUserPlannedList: RequestHandler = catchAsync(
     sendResponse<any>(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Added to user wishlist',
+      message: 'Added to user planned reading list',
       data: result,
     });
   }
@@ -64,7 +64,6 @@ const addBookToUserPlannedList: RequestHandler = catchAsync(
 const finishBookFromUserPlannedList: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const id = req.params.id;
-    console.log(req.body);
     const bookId = req.body.bookId;
     const result = await UserService.finishBookFromUserPlannedList(id, bookId);
     sendResponse<any>(res, {
