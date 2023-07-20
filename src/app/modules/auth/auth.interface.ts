@@ -1,5 +1,3 @@
-import { USER_ROLE } from '../../../enums';
-
 export type ILoginUser = {
   email: string;
   password: string;
@@ -16,5 +14,5 @@ export type IRefreshTokenResponse = {
 
 export type IVerifiedLoginUser = {
   userId: string;
-  role: USER_ROLE;
+  // role: USER_ROLE;
 };

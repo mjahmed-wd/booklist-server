@@ -3,11 +3,7 @@ import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiErrors';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
-import {
-  ILoginUser,
-  ILoginUserResponse,
-  IRefreshTokenResponse,
-} from '../auth/auth.interface';
+import { ILoginUser, IRefreshTokenResponse } from '../auth/auth.interface';
 import User from '../user/user.model';
 
 const loginUser = async (payload: ILoginUser): Promise<ILoginUser | null> => {
@@ -52,7 +48,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   const newAccessToken = jwtHelpers.createToken(
     {
       id: isUserExist.id,
-      role: isUserExist.role,
+      // role: isUserExist.role,
     },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
